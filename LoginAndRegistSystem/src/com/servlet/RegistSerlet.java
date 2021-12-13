@@ -23,7 +23,7 @@ public class RegistSerlet extends HttpServlet{
 		//2、判断用户名是否可用
 		UserDao userDao = new UserDaoImpl();
 		
-		User user = userDao.getUserByUsername(username);
+		User user = userDao.getUserByUsername(username);//告诉我user对象存在吗
 		if (user != null) {
 			//注册失败回到注册页面，并进行相应的提示
 			//转发

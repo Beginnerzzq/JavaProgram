@@ -16,7 +16,7 @@ public class UserDaoImpl implements UserDao{
 		
 		//获取连接
 		try {
-			Connection conn = ConnectionUtils.getConn();
+			Connection conn = ConnectionUtils.getConn();//连接数据库
 			
 			String sql="select * from user where username=? and password=?";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -91,6 +91,50 @@ public class UserDaoImpl implements UserDao{
 			Connection conn = ConnectionUtils.getConn();
 			
 			String sql = "insert into user (username,password) value(?,?)";
+			PreparedStatement ps = 	conn.prepareStatement(sql);
+			ps.setString(1, username);
+			ps.setString(2, password);
+			
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ConnectionUtils.closeConn();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void changeUserByUsername(String username,String passwordFirst,String passwordSecond) {
+		try {
+			Connection conn = ConnectionUtils.getConn();
+			
+			String sql = "UPDATE  user SET password=? WHERE username=?";
+			PreparedStatement ps = 	conn.prepareStatement(sql);
+			ps.setString(1, passwordSecond);
+			ps.setString(2, username);
+			
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				ConnectionUtils.closeConn();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteUser(String username, String password) {
+		try {
+			Connection conn = ConnectionUtils.getConn();
+			
+			String sql = "DELETE FROM user WHERE username=? and password=?";
 			PreparedStatement ps = 	conn.prepareStatement(sql);
 			ps.setString(1, username);
 			ps.setString(2, password);

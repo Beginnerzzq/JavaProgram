@@ -43,9 +43,9 @@ public class LoginServlet extends HttpServlet {
 		
 		//验证用户名密码是否正确
 		
-		//通过响应对象HttpServletResponse，给客户端响应数据
-		resp.setContentType("text/html;charset=utf-8");
-		PrintWriter out = resp.getWriter();
+//		//通过响应对象HttpServletResponse，给客户端响应数据
+//		resp.setContentType("text/html;charset=utf-8");
+//		PrintWriter out = resp.getWriter();
 		
 		//获取Dao对象
 		UserDao userDao = new UserDaoImpl();
@@ -53,8 +53,13 @@ public class LoginServlet extends HttpServlet {
 		User user = userDao.getUserByUsernameAndPassword(username, password);
 		
 		if(user != null) {
-			//登录成功
-			out.println("login success!");
+			//去往登录页之前，绑定数据到request对象中
+			req.setAttribute("user", user);
+			//登录成功,去往个人主页
+			//获取转发器
+			RequestDispatcher rd1 = req.getRequestDispatcher("main.jsp");
+			//开始转发
+			rd1.forward(req, resp);
 		}else {
 			//通过重定向的方式去往登录页面
 			/*
@@ -69,16 +74,10 @@ public class LoginServlet extends HttpServlet {
 			req.setAttribute("loginMsg", "用户名或密码错误!");
 			
 			//获取转发器
-			RequestDispatcher rd = req.getRequestDispatcher("login.jsp");
+			RequestDispatcher rd2 = req.getRequestDispatcher("login.jsp");
 			//开始转发
-			rd.forward(req, resp);
+			rd2.forward(req, resp);
 			
 		}
-		
-		
-		
-		
-		
-		
 	}
 }
